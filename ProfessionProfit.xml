@@ -1,0 +1,728 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\..\FrameXML\UI.xsd">
+  <Script file="ProfessionProfit.UI.lua"/>
+  <Include file="ProfessionProfit.Templates.xml"/>
+
+	<Frame name="ProfessionProfitDataFrame"> 
+		<Scripts> 
+			<OnLoad> 
+				self:RegisterEvent("ADDON_LOADED");
+				self:RegisterEvent("PLAYER_LOGOUT");
+				self:RegisterEvent("AUCTION_ITEM_LIST_UPDATE");
+			</OnLoad>
+			<OnEvent function="ProfessionProfitDataFrame_OnEvent" />
+		</Scripts>
+	</Frame>
+
+  <GameTooltip name="ProfessionProfitTooltip" inherits="GameTooltipTemplate">
+    <Scripts>
+      <Onload>
+        self:SetOwner(WorldFrame, "ANCHOR_NONE");
+      </Onload>
+    </Scripts>
+  </GameTooltip>
+  
+  <Button name="ProfessionProfitAuctionFrameTab" inherits="CharacterFrameTabButtonTemplate" text="Profit" hidden="true">
+		<Scripts>
+		  <OnLoad function="ProfessionProfit_Tab_OnLoad"/>
+		  <OnEvent function="ProfessionProfit_Tab_OnEvent"/>
+			<OnClick>
+				AuctionFrameTab_OnClick(self, button, down);
+			</OnClick>
+		</Scripts>
+  </Button>
+
+	<Frame name="AuctionFrameProfit" hidden="true">
+		<Size>
+			<AbsDimension x="758" y="447"/>
+		</Size>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentTitle" inherits="GameFontNormal" text="Profession Profit" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="75" y="-18"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentCredit" inherits="GameFontNormal" text="" justifyH="RIGHT">
+					<Anchors>
+						<Anchor point="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="40" y="-18"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="ProfitListNameText" inherits="GameFontHighlightSmall" text="New List Name">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="80" y="-40"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentItemNameText" inherits="GameFontHighlightSmall" text="New Item Name">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="620" y="-40"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentStatusText" inherits="GameFontNormal" text="Click Scan to update listing." justifyH="LEFT">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="190" y="20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad function="ProfessionProfit_Frame_OnLoad"/>
+			<OnShow function="ProfessionProfit_Frame_OnShow"/>
+			<OnEvent function="ProfessionProfit_Frame_OnEvent"/>
+		</Scripts>
+		<Frames>
+			<Button name="ProfitFile1" inherits="ProfitFileTemplate" id="1">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="23" y="-105"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile2" inherits="ProfitFileTemplate" id="2">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile1" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile3" inherits="ProfitFileTemplate" id="3">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile2" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile4" inherits="ProfitFileTemplate" id="4">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile3" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile5" inherits="ProfitFileTemplate" id="5">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile4" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile6" inherits="ProfitFileTemplate" id="6">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile5" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile7" inherits="ProfitFileTemplate" id="7">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile6" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile8" inherits="ProfitFileTemplate" id="8">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile7" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile9" inherits="ProfitFileTemplate" id="9">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile8" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile10" inherits="ProfitFileTemplate" id="10">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile9" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile11" inherits="ProfitFileTemplate" id="11">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile10" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile12" inherits="ProfitFileTemplate" id="12">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile11" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile13" inherits="ProfitFileTemplate" id="13">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile12" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile14" inherits="ProfitFileTemplate" id="14">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile13" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="ProfitFile15" inherits="ProfitFileTemplate" id="15">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitFile14" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<ScrollFrame name="ProfitListScrollFrame" inherits="FauxScrollFrameTemplate">
+				<Size>
+					<AbsDimension x="160" y="305"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="158" y="-105"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+							<Size>
+								<AbsDimension x="31" y="256"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0" right="0.484375" top="0" bottom="1.0"/>
+						</Texture>
+						<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+							<Size>
+								<AbsDimension x="31" y="106"/>
+							</Size>
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+									<Offset>
+										<AbsDimension x="-2" y="-2"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnVerticalScroll>
+						FauxScrollFrame_OnVerticalScroll(self, offset, 20, ProfessionProfit_Frame_List_Update);
+					</OnVerticalScroll>
+				</Scripts>
+			</ScrollFrame>
+			
+<!--// SORT HEADERS //-->
+					<Button name="$parentSortHeaderIcon" id="1" inherits="ProfitSortButtonTemplate" text="">
+						<Size>
+							<AbsDimension x="42" y="19"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="186" y="-82"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="ProfessionProfit_Frame_Sort_Items" />
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+							  GameTooltip:SetText("Sort items by icon (texture name).", nil, nil, nil, nil, 1);
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					<Button name="$parentSortHeaderName" id="2" inherits="ProfitSortButtonTemplate" text="Item Name">
+						<Size>
+							<AbsDimension x="165" y="19"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentSortHeaderIcon" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="ProfessionProfit_Frame_Sort_Items" />
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+							  GameTooltip:SetText("Sort items by name.", nil, nil, nil, nil, 1);
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					<Button name="$parentSortHeaderCount" id="3" inherits="ProfitSortButtonTemplate" text="Count">
+						<Size>
+							<AbsDimension x="65" y="19"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentSortHeaderName" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="ProfessionProfit_Frame_Sort_Items" />
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+							  GameTooltip:SetText("Sort items by number of current auctions.", nil, nil, nil, nil, 1);
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					<Button name="$parentSortHeaderSeller" id="4" inherits="ProfitSortButtonTemplate" text="Seller">
+						<Size>
+							<AbsDimension x="230" y="19"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentSortHeaderCount" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="ProfessionProfit_Frame_Sort_Items" />
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+								GameTooltip:SetText("Sort items by Seller.", nil, nil, nil, nil, 1);
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					<Button name="$parentSortHeaderBuyout" id="5" inherits="ProfitSortButtonTemplate" text="Buyout">
+						<Size>
+							<AbsDimension x="135" y="19"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentSortHeaderSeller" relativePoint="RIGHT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnClick function="ProfessionProfit_Frame_Sort_Items" />
+							<OnEnter>
+								GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+								GameTooltip:SetText("Sort items by buyout price.", nil, nil, nil, nil, 1);
+							</OnEnter>
+							<OnLeave function="GameTooltip_Hide"/>
+						</Scripts>
+					</Button>
+					
+					
+<!--// ITEMS START //-->
+
+
+
+					<Button name="$parentItemButton1" inherits="ProfitItemButtonTemplate" id="1">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="195" y="-110"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton2" inherits="ProfitItemButtonTemplate" id="2">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton1" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton3" inherits="ProfitItemButtonTemplate" id="3">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton2" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton4" inherits="ProfitItemButtonTemplate" id="4">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton3" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton5" inherits="ProfitItemButtonTemplate" id="5">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton4" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton6" inherits="ProfitItemButtonTemplate" id="6">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton5" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton7" inherits="ProfitItemButtonTemplate" id="7">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton6" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<Button name="$parentItemButton8" inherits="ProfitItemButtonTemplate" id="8">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentItemButton7" relativePoint="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Button>
+					<ScrollFrame name="$parentItemScrollFrame" inherits="FauxScrollFrameTemplate">
+						<Size>
+							<AbsDimension x="610" y="306"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="39" y="-105"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Layers>
+							<Layer level="ARTWORK">
+								<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+									<Size>
+										<AbsDimension x="31" y="256"/>
+									</Size>
+									<Anchors>
+										<Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+											<Offset>
+												<AbsDimension x="-2" y="5"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0" right="0.484375" top="0" bottom="1.0"/>
+								</Texture>
+								<Texture file="Interface\PaperDollInfoFrame\UI-Character-ScrollBar">
+									<Size>
+										<AbsDimension x="31" y="106"/>
+									</Size>
+									<Anchors>
+										<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+											<Offset>
+												<AbsDimension x="-2" y="-2"/>
+											</Offset>
+										</Anchor>
+									</Anchors>
+									<TexCoords left="0.515625" right="1.0" top="0" bottom="0.4140625"/>
+								</Texture>
+							</Layer>
+						</Layers>
+						<Scripts>
+							<OnVerticalScroll>
+								FauxScrollFrame_OnVerticalScroll(self, offset, 37, ProfessionProfit_Frame_Item_Update);
+							</OnVerticalScroll>
+						</Scripts>
+					</ScrollFrame>
+
+
+<!--// ITEMS END //-->
+			
+			
+			
+			
+			
+			
+			
+			
+			
+<!--// LIST BOX OBJECTS START //-->
+			<EditBox name="ProfitListName" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="140" y="16"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="ProfitListNameText" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="3" y="-2"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnTabPressed>
+						if ( IsShiftKeyDown() ) then
+							--BrowseBidPriceCopper:SetFocus();
+						else
+							--BrowseMinLevel:SetFocus();
+						end
+					</OnTabPressed>
+					<OnEnterPressed>
+						ProfessionProfit_Frame_List_Add_Bnt_OnClick();
+						self:ClearFocus();
+					</OnEnterPressed>
+				</Scripts>
+				<FontString inherits="ChatFontNormal" bytes="25"/>
+			</EditBox>
+
+			<Button name="ProfitListAddButton" inherits="UIPanelButtonTemplate" text="Add">
+				<Size>
+					<AbsDimension x="50" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="ProfitListName" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick function="ProfessionProfit_Frame_List_Add_Bnt_OnClick" />
+					<OnUpdate function="ProfessionProfit_Frame_List_Add_Bnt_OnUpdate" />
+				</Scripts>
+			</Button>
+
+			<Button name="ProfitListDeleteButton" inherits="UIPanelButtonTemplate" text="Delete List">
+				<Size>
+					<AbsDimension x="156" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="20" y="-75"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick function="ProfessionProfit_Frame_List_Delete_Bnt_OnClick" />
+				</Scripts>
+			</Button>
+
+<!--// LIST BOX OBJECTS END //-->
+
+
+<!--// ITEM BOX OBJECTS START //-->
+			<EditBox name="$parentItemName" autoFocus="false" inherits="InputBoxTemplate">
+				<Size>
+					<AbsDimension x="140" y="16"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parentItemNameText" relativePoint="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="3" y="-2"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnEnterPressed function="ProfessionProfit_Frame_Item_Add_Bnt_OnClick" />
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+  					GameTooltip:SetText("Enter the exact name that you wish to keep tabs on.", 1.0, 1.0, 1.0);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+				<FontString inherits="ChatFontNormal" bytes="64"/>
+			</EditBox>
+
+			<Button name="$parentItemAddButton" inherits="UIPanelButtonTemplate" text="Add">
+				<Size>
+					<AbsDimension x="50" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parentItemName" relativePoint="RIGHT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick function="ProfessionProfit_Frame_Item_Add_Bnt_OnClick" />
+					<OnUpdate function="ProfessionProfit_Frame_Item_Add_Bnt_OnUpdate" />
+				</Scripts>
+			</Button>
+			<Button name="$parentItemIcon">
+				<Size x="36" y="36"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentItemName" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="-15" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture file="Interface\Buttons\UI-EmptySlot-Disabled">
+							<Size>
+								<AbsDimension x="45" y="45"/>
+							</Size>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="-1"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<TexCoords left="0.140625" right="0.84375" top="0.140625" bottom="0.84375"/>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnLoad>
+						self:RegisterForDrag("LeftButton");
+					</OnLoad>
+					<OnEvent       function="ProfessionProfit_Frame_Item_Icon_OnEvent"/>
+					<OnClick       function="ProfessionProfit_Frame_Item_Icon_OnClick"/>
+					<OnDragStart   function="ProfessionProfit_Frame_Item_Icon_OnClick"/>
+					<OnReceiveDrag function="ProfessionProfit_Frame_Item_Icon_OnClick"/>
+					<OnLeave       function="GameTooltip_Hide"/>
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+  					GameTooltip:SetText("Drag an Item here to add it to the list.", 1.0, 1.0, 1.0);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+				
+				<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+			</Button>
+
+<!--// ITEM BOX OBJECTS END //-->
+			<Button name="ProfitCloseButton" inherits="UIPanelButtonTemplate" text="CLOSE">
+				<Size>
+					<AbsDimension x="80" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="66" y="14"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						HideUIPanel(self:GetParent():GetParent());
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentListScanButton" inherits="UIPanelButtonTemplate" text="Scan">
+				<Size>
+					<AbsDimension x="80" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="ProfitCloseButton" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick function="ProfessionProfit_Frame_List_Scan_Bnt_OnClick" />
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+  					GameTooltip:SetText("Scan the auction house for the items in your list.", 1.0, 1.0, 1.0);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+			<Button name="$parentItemDeleteButton" inherits="UIPanelButtonTemplate" text="Delete">
+				<Size>
+					<AbsDimension x="80" y="22"/>
+				</Size>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentListScanButton" relativePoint="LEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick function="ProfessionProfit_Frame_Item_Delete_Bnt_OnClick" />
+					<OnEnter>
+						GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+  					GameTooltip:SetText("Delete an item from your list.", 1.0, 1.0, 1.0);
+					</OnEnter>
+					<OnLeave function="GameTooltip_Hide"/>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

@@ -1,0 +1,9 @@
+## Interface: 11303
+## Title: |cCC3333ffProfession Profit|r
+## Notes: Shows Listed Professions Items that are currently on the aution house and what there prices are.
+## Author: Hãwtsauce@Netherwind
+## Version: 1.1
+## SavedVariables: ProfessionProfitDataStore, ProfessionProfitItemStore
+ProfessionProfit.lua
+ProfessionProfit.DB.lua
+ProfessionProfit.xml
